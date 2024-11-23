@@ -7,11 +7,13 @@ namespace Nomiai\PhpSdk;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
+use Nomiai\PhpSdk\Actions\ManagesNomis;
 use Nomiai\PhpSdk\Traits\MakesHttpRequests;
 
 class NomiAI
 {
     use MakesHttpRequests;
+    use ManagesNomis;
 
     /**
      * NomiAI constructor.
