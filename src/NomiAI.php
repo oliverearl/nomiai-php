@@ -6,6 +6,7 @@ namespace Nomiai\PhpSdk;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\RequestOptions;
 use Nomiai\PhpSdk\Traits\MakesHttpRequests;
 
 class NomiAI
@@ -21,9 +22,9 @@ class NomiAI
         private ?ClientInterface $client = null,
     ) {
         $this->client ??= new Client([
-            'http_errors' => false,
             'base_uri' => $this->endpoint . '/',
-            'headers' => [
+            RequestOptions::HTTP_ERRORS => false,
+            RequestOptions::HEADERS => [
                 'Authorization' => "Bearer {$this->token}",
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
