@@ -9,7 +9,7 @@ use Nomiai\PhpSdk\Enums\Gender;
 use Nomiai\PhpSdk\Enums\RelationshipType;
 use RuntimeException;
 
-class Nomi
+readonly class Nomi
 {
     /**
      * Unique identifier
