@@ -1,6 +1,6 @@
 {
     "name": "oliverearl/nomiai-php",
-    "description": "This is my package nomiai-php",
+    "description": "PHP SDK for interacting with the Nomi.ai API",
     "keywords": [
         "nomi ai",
         "nomi",
