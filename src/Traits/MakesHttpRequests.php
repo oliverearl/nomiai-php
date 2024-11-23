@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nomiai\PhpSdk\Traits;
 
 use GuzzleHttp\RequestOptions;
+use JsonException;
 use Nomiai\PhpSdk\Constants\HttpMethod;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
@@ -16,10 +17,11 @@ trait MakesHttpRequests
      * Make a GET request.
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \JsonException
      *
-     * @return null|string|array<string, mixed>
+     * @return array<string, mixed>
      */
-    public function get(string $uri): string|array|null
+    public function get(string $uri): array
     {
         return $this->request(HttpMethod::GET, $uri);
     }
@@ -30,10 +32,11 @@ trait MakesHttpRequests
      * @param array<string, mixed> $payload
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \JsonException
      *
-     * @return null|string|array<string, mixed>
+     * @return array<string, mixed>
      */
-    public function post(string $uri, array $payload = []): string|array|null
+    public function post(string $uri, array $payload = []): array
     {
         return $this->request(HttpMethod::POST, $uri, $payload);
     }
@@ -44,10 +47,11 @@ trait MakesHttpRequests
      * @param array<string, mixed> $payload
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \JsonException
      *
-     * @return null|string|array<string, mixed>
+     * @return array<string, mixed>
      */
-    public function put(string $uri, array $payload = []): string|array|null
+    public function put(string $uri, array $payload = []): array
     {
         return $this->request(HttpMethod::PUT, $uri, $payload);
     }
@@ -58,10 +62,11 @@ trait MakesHttpRequests
      * @param array<string, mixed> $payload
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \JsonException
      *
-     * @return null|string|array<string, mixed>
+     * @return array<string, mixed>
      */
-    public function patch(string $uri, array $payload = []): string|array|null
+    public function patch(string $uri, array $payload = []): array
     {
         return $this->request(HttpMethod::PATCH, $uri, $payload);
     }
@@ -72,10 +77,11 @@ trait MakesHttpRequests
      * @param array<string, mixed> $payload
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \JsonException
      *
-     * @return null|string|array<string, mixed>
+     * @return array<string, mixed>
      */
-    public function delete(string $uri, array $payload = []): string|array|null
+    public function delete(string $uri, array $payload = []): array
     {
         return $this->request(HttpMethod::DELETE, $uri, $payload);
     }
@@ -86,10 +92,11 @@ trait MakesHttpRequests
      * @param array<string, mixed> $payload
      *
      * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \JsonException
      *
-     * @return null|string|array<string, mixed>
+     * @return array<string, mixed>
      */
-    public function request(string $verb, string $uri, array $payload = []): null|string|array
+    public function request(string $verb, string $uri, array $payload = []): array
     {
         $response = $this->client->request(
             method: $verb,
@@ -103,7 +110,7 @@ trait MakesHttpRequests
 
         $body = (string) $response->getBody();
 
-        return json_decode($body, associative: true) ?: $body;
+        return json_decode($body, associative: true) ?: throw new JsonException('Invalid response body received!');
     }
 
     /**
