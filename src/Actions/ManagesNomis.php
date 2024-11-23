@@ -19,7 +19,7 @@ trait ManagesNomis
      *
      * @return array<int, \Nomiai\PhpSdk\Resources\Nomi>
      */
-    public function index(): array
+    public function getNomis(): array
     {
         $response = $this->get('/v1/nomis');
 
@@ -34,7 +34,7 @@ trait ManagesNomis
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \JsonException
      */
-    public function show(string $id): Nomi
+    public function getNomi(string $id): Nomi
     {
         $response = $this->get("/v1/nomis/{$id}");
 
