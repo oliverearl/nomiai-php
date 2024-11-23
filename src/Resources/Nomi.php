@@ -88,4 +88,21 @@ class Nomi
             relationshipType: $response['relationshipType'],
         );
     }
+
+
+    /**
+     * Return an array representation of this resource.
+     *
+     * @return array<string, string>
+     */
+    public function toArray(): array
+    {
+        return [
+            'uuid' => $this->uuid,
+            'name' => $this->name,
+            'created' => $this->created->format(DateTimeImmutable::ATOM),
+            'gender' => $this->gender->value,
+            'relationshipType' => $this->relationshipType->value,
+        ];
+    }
 }
