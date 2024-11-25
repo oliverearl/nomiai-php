@@ -98,6 +98,20 @@ trait MakesHttpRequests
      */
     public function request(string $verb, string $uri, array $payload = []): array
     {
+        $body = $this->rawRequest($verb, $uri, $payload);
+
+        return json_decode($body, associative: true) ?: throw new JsonException('Invalid response body received!');
+    }
+
+    /**
+     * Make a HTTP request to the API without attempting to decode the response.
+     *
+     * @param array<string, mixed> $payload
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function rawRequest(string $verb, string $uri, array $payload = []): string
+    {
         $response = $this->client->request(
             method: $verb,
             uri: $uri,
@@ -108,9 +122,7 @@ trait MakesHttpRequests
             $this->handleRequestError($response);
         }
 
-        $body = (string) $response->getBody();
-
-        return json_decode($body, associative: true) ?: throw new JsonException('Invalid response body received!');
+        return (string) $response->getBody();
     }
 
     /**
