@@ -1,6 +1,6 @@
 {
     "name": "oliverearl/nomiai-php",
-    "description": "PHP SDK for interacting with the Nomi.ai API",
+    "description": "PHP library for interacting with the Nomi.ai API",
     "keywords": [
         "nomi ai",
         "nomi",
