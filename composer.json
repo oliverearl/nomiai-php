@@ -22,7 +22,7 @@
         "fakerphp/faker": "^1.24",
         "guzzlehttp/guzzle": "^7.9",
         "laravel/pint": "^1.0",
-        "pestphp/pest": "^2.20",
+        "pestphp/pest": "^3.5",
         "spatie/ray": "^1.28",
         "tomb1n0/guzzle-mock-handler": "^1.7",
         "vlucas/phpdotenv": "^5.6"
