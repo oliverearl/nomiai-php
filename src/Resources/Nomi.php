@@ -9,7 +9,7 @@ use Nomiai\PhpSdk\Enums\Gender;
 use Nomiai\PhpSdk\Enums\RelationshipType;
 use RuntimeException;
 
-readonly class Nomi
+readonly class Nomi extends Resource
 {
     /**
      * Unique identifier
@@ -43,6 +43,8 @@ readonly class Nomi
 
     /**
      * Nomi constructor.
+     *
+     * @throws \RuntimeException
      */
     public function __construct(
         string $uuid,
@@ -73,12 +75,8 @@ readonly class Nomi
             );
     }
 
-    /**
-     * Return a new Nomi from an API representation.
-     *
-     * @param array<string, mixed> $response
-     */
-    public static function make(array $response): self
+    /** @inheritDoc */
+    public static function make(array $response): static
     {
         return new self(
             uuid: $response['uuid'],
@@ -90,11 +88,7 @@ readonly class Nomi
     }
 
 
-    /**
-     * Return an array representation of this resource.
-     *
-     * @return array<string, string>
-     */
+    /** @inheritDoc */
     public function toArray(): array
     {
         return [
