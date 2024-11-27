@@ -6,7 +6,7 @@ namespace Nomiai\PhpSdk\Resources;
 
 use JsonSerializable;
 
-readonly abstract class Resource implements JsonSerializable
+abstract readonly class Resource implements JsonSerializable
 {
     /**
      * Return a new resource based on the API response.

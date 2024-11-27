@@ -16,7 +16,7 @@ readonly class MessageSet extends Resource
     {
         return new self(
             sent: Message::make($response['sentMessage']),
-            reply: Message::make($response['replyMessage'])
+            reply: Message::make($response['replyMessage']),
         );
     }
 
