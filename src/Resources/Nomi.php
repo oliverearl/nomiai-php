@@ -85,7 +85,6 @@ readonly class Nomi extends Resource
         );
     }
 
-
     /** @inheritDoc */
     public function toArray(): array
     {
