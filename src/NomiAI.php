@@ -29,7 +29,7 @@ class NomiAI
             'base_uri' => $this->endpoint . '/',
             RequestOptions::HTTP_ERRORS => false,
             RequestOptions::HEADERS => [
-                'Authorization' => "Bearer {$this->token}",
+                'Authorization' => $this->token,
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
             ],

@@ -36,7 +36,7 @@ describe('nomis', function (): void {
             $response
                 ->withMethod(HttpMethod::GET)
                 ->withStatus(HttpStatus::OK)
-                ->withBody($nomis);
+                ->withBody(['nomis' => $nomis]);
             $handler->expect($response);
 
             $api = new NomiAI('', '', new Client(['handler' => HandlerStack::create($handler)]));
