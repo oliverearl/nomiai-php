@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Nomiai\PhpSdk\Resources;
 
 use DateTimeImmutable;
-use RuntimeException;
 
 readonly class Message extends Resource
 {
