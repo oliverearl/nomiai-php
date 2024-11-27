@@ -21,7 +21,7 @@ describe('nomis', function (): void {
             $nomi = fn(): array => [
                 'uuid' => $this->faker->uuid(),
                 'name' => $this->faker->name(),
-                'created' => $this->faker->date(DateTimeImmutable::ATOM),
+                'created' => $this->faker->date(Nomi::ISO8601),
                 'gender' => ($this->faker->randomElement(Gender::cases()))->value,
                 'relationshipType' => ($this->faker->randomElement(RelationshipType::cases()))->value,
             ];
@@ -56,7 +56,7 @@ describe('nomis', function (): void {
             $nomi = [
                 'uuid' => $id,
                 'name' => $this->faker->name(),
-                'created' => $this->faker->date(DateTimeImmutable::ATOM),
+                'created' => $this->faker->date(Nomi::ISO8601),
                 'gender' => ($this->faker->randomElement(Gender::cases()))->value,
                 'relationshipType' => ($this->faker->randomElement(RelationshipType::cases()))->value,
             ];

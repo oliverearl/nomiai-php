@@ -9,6 +9,11 @@ use JsonSerializable;
 abstract readonly class Resource implements JsonSerializable
 {
     /**
+     * The format used by Nomi.ai datetimes.
+     */
+    final public const string ISO8601 = 'Y-m-d\TH:i:s.vT';
+
+    /**
      * Return a new resource based on the API response.
      *
      * @param array<string, mixed> $response

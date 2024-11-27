@@ -45,6 +45,7 @@ readonly class Nomi extends Resource
      * Nomi constructor.
      *
      * @throws \RuntimeException
+     * @throws \DateMalformedStringException
      */
     public function __construct(
         string $uuid,
@@ -57,10 +58,7 @@ readonly class Nomi extends Resource
         $this->name = $name;
         $this->created = $created instanceof DateTimeImmutable
             ? $created
-            : (
-                DateTimeImmutable::createFromFormat(DateTimeImmutable::ATOM, $created)
-                ?: throw new RuntimeException('The provided creation date is invalid!')
-            );
+            : new DateTimeImmutable($created);
         $this->gender = $gender instanceof Gender
             ? $gender
             : (
@@ -94,7 +92,7 @@ readonly class Nomi extends Resource
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
-            'created' => $this->created->format(DateTimeImmutable::ATOM),
+            'created' => $this->created->format(self::ISO8601),
             'gender' => $this->gender->value,
             'relationshipType' => $this->relationshipType->value,
         ];

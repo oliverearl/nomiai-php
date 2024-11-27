@@ -31,6 +31,7 @@ readonly class Message extends Resource
      * Message constructor.
      *
      * @throws \RuntimeException
+     * @throws \DateMalformedStringException
      */
     public function __construct(
         string $uuid,
@@ -41,10 +42,7 @@ readonly class Message extends Resource
         $this->text = $text;
         $this->sent = $sent instanceof DateTimeImmutable
             ? $sent
-            : (
-                DateTimeImmutable::createFromFormat(DateTimeImmutable::ATOM, $sent)
-                ?: throw new RuntimeException('The provided creation date is invalid!')
-            );
+            : new DateTimeImmutable($sent);
     }
 
     /** @inheritDoc */
@@ -63,7 +61,7 @@ readonly class Message extends Resource
         return [
             'uuid' => $this->uuid,
             'text' => $this->text,
-            'sent' => $this->sent->format(DateTimeImmutable::ATOM),
+            'sent' => $this->sent->format(self::ISO8601),
         ];
     }
 }
