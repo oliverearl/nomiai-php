@@ -18,11 +18,16 @@ class NomiAI
     use ManagesNomis;
 
     /**
+     * The default endpoint to use for the library.
+     */
+    public const string DEFAULT_ENDPOINT = 'https://api.nomi.ai';
+
+    /**
      * NomiAI constructor.
      */
     public function __construct(
         private readonly string $token,
-        private readonly string $endpoint,
+        private readonly string $endpoint = self::DEFAULT_ENDPOINT,
         private ?ClientInterface $client = null,
     ) {
         $this->client ??= new Client([
