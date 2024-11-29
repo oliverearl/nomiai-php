@@ -13,3 +13,10 @@ it('can be made into an array', function (): void {
 
     expect($avatar->toArray())->toEqual(['avatar' => $avatar->avatar]);
 });
+
+it('can be casted into a string', function (): void {
+    $uuid = $this->faker->uuid();
+    $avatar = Avatar::make([$uuid]);
+
+    expect((string) $avatar)->toEqual($uuid);
+});

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Nomiai\PhpSdk\Resources;
 
 use InvalidArgumentException;
+use Stringable;
 
-readonly class Avatar extends Resource
+readonly class Avatar extends Resource implements Stringable
 {
     /**
      * Avatar constructor.
@@ -27,5 +28,11 @@ readonly class Avatar extends Resource
         return [
             'avatar' => $this->avatar,
         ];
+    }
+
+    /** @inheritDoc */
+    public function __toString(): string
+    {
+        return $this->avatar;
     }
 }
