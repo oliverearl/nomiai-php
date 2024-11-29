@@ -4,18 +4,13 @@
 
 declare(strict_types=1);
 
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
 use Nomiai\PhpSdk\Constants\HttpMethod;
 use Nomiai\PhpSdk\Constants\HttpStatus;
 use Nomiai\PhpSdk\Enums\Gender;
 use Nomiai\PhpSdk\Enums\RelationshipType;
-use Nomiai\PhpSdk\NomiAI;
 use Nomiai\PhpSdk\Resources\Message;
 use Nomiai\PhpSdk\Resources\MessageSet;
 use Nomiai\PhpSdk\Resources\Nomi;
-use Tomb1n0\GuzzleMockHandler\GuzzleMockHandler;
-use Tomb1n0\GuzzleMockHandler\GuzzleMockResponse;
 
 describe('chats', function () {
     it('can send a message and receive a response to a nomi', function (): void {
@@ -34,15 +29,12 @@ describe('chats', function () {
             ),
         );
 
-        $handler = new GuzzleMockHandler();
-        $response = new GuzzleMockResponse("/v1/nomis/{$nomiId}/chat");
-        $response
-            ->withMethod(HttpMethod::POST)
-            ->withStatus(HttpStatus::OK)
-            ->withBody($messageSet->toArray());
-        $handler->expect($response);
-
-        $api = new NomiAI('', '', new Client(['handler' => HandlerStack::create($handler)]));
+        $api = $this->dummy(
+            uri: "/v1/nomis/{$nomiId}/chat",
+            method: HttpMethod::POST,
+            status: HttpStatus::OK,
+            body: $messageSet->toArray(),
+        );
 
         // When using helper method, expect the same reply!
         $nomi = new Nomi(

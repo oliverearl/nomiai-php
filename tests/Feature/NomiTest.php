@@ -4,14 +4,9 @@
 
 declare(strict_types=1);
 
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
 use Nomiai\PhpSdk\Constants\HttpMethod;
 use Nomiai\PhpSdk\Constants\HttpStatus;
-use Nomiai\PhpSdk\NomiAI;
 use Nomiai\PhpSdk\Resources\Nomi;
-use Tomb1n0\GuzzleMockHandler\GuzzleMockHandler;
-use Tomb1n0\GuzzleMockHandler\GuzzleMockResponse;
 
 describe('nomis', function (): void {
     describe('index', function (): void {
@@ -21,15 +16,13 @@ describe('nomis', function (): void {
                 $this->nomi()->toArray(),
             ];
 
-            $handler = new GuzzleMockHandler();
-            $response = new GuzzleMockResponse('/v1/nomis');
-            $response
-                ->withMethod(HttpMethod::GET)
-                ->withStatus(HttpStatus::OK)
-                ->withBody(['nomis' => $nomis]);
-            $handler->expect($response);
+            $api = $this->dummy(
+                uri: '/v1/nomis',
+                method: HttpMethod::GET,
+                status: HttpStatus::OK,
+                body: ['nomis' => $nomis],
+            );
 
-            $api = new NomiAI('', '', new Client(['handler' => HandlerStack::create($handler)]));
             $retrievedNomis = $api->getNomis();
 
             foreach ($retrievedNomis as $index => $retrievedNomi) {
@@ -45,15 +38,13 @@ describe('nomis', function (): void {
             $nomi = $this->nomi();
             $id = $nomi->uuid;
 
-            $handler = new GuzzleMockHandler();
-            $response = new GuzzleMockResponse("/v1/nomis/{$id}");
-            $response
-                ->withMethod(HttpMethod::GET)
-                ->withStatus(HttpStatus::OK)
-                ->withBody($nomi->toArray());
-            $handler->expect($response);
+            $api = $this->dummy(
+                uri: "/v1/nomis/{$id}",
+                method: HttpMethod::GET,
+                status: HttpStatus::OK,
+                body: $nomi->toArray(),
+            );
 
-            $api = new NomiAI('', '', new Client(['handler' => HandlerStack::create($handler)]));
             $retrievedNomi = $api->getNomi($id);
 
             expect($retrievedNomi)
