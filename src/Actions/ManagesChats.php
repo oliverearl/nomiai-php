@@ -13,8 +13,7 @@ trait ManagesChats
     /**
      * Send a message to a given Nomi.
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
+     * @see https://api.nomi.ai/docs/reference/post-v1-nomis-id-chat
      */
     public function sendMessageToNomi(Nomi $nomi, string $message): MessageSet
     {
@@ -24,8 +23,7 @@ trait ManagesChats
     /**
      * Send a message to a given ID.
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
+     * @see https://api.nomi.ai/docs/reference/post-v1-nomis-id-chat
      */
     public function sendMessage(string $id, string $message): MessageSet
     {

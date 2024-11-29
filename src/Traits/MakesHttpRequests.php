@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Nomiai\PhpSdk\Traits;
 
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
-use JsonException;
+use Nomiai\PhpSdk\Constants\ErrorResponse;
 use Nomiai\PhpSdk\Constants\HttpMethod;
+use Nomiai\PhpSdk\Exceptions\NomiException;
 use Psr\Http\Message\ResponseInterface;
-use RuntimeException;
 
 /** @mixin \Nomiai\PhpSdk\NomiAI */
 trait MakesHttpRequests
 {
     /**
      * Make a GET request.
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
      *
      * @return array<string, mixed>
      */
@@ -31,9 +29,6 @@ trait MakesHttpRequests
      *
      * @param array<string, mixed> $payload
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
-     *
      * @return array<string, mixed>
      */
     public function post(string $uri, array $payload = []): array
@@ -45,9 +40,6 @@ trait MakesHttpRequests
      * Make a PUT request.
      *
      * @param array<string, mixed> $payload
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
      *
      * @return array<string, mixed>
      */
@@ -61,9 +53,6 @@ trait MakesHttpRequests
      *
      * @param array<string, mixed> $payload
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
-     *
      * @return array<string, mixed>
      */
     public function patch(string $uri, array $payload = []): array
@@ -75,9 +64,6 @@ trait MakesHttpRequests
      * Make a DELETE request.
      *
      * @param array<string, mixed> $payload
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
      *
      * @return array<string, mixed>
      */
@@ -91,8 +77,7 @@ trait MakesHttpRequests
      *
      * @param array<string, mixed> $payload
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
+     * @throws \Nomiai\PhpSdk\Exceptions\NomiException
      *
      * @return array<string, mixed>
      */
@@ -100,7 +85,7 @@ trait MakesHttpRequests
     {
         $body = $this->rawRequest($verb, $uri, $payload);
 
-        return json_decode($body, associative: true) ?: throw new JsonException('Invalid response body received!');
+        return json_decode($body, associative: true) ?: throw new NomiException();
     }
 
     /**
@@ -108,15 +93,19 @@ trait MakesHttpRequests
      *
      * @param array<string, mixed> $payload
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Nomiai\PhpSdk\Exceptions\NomiException
      */
     public function rawRequest(string $verb, string $uri, array $payload = []): string
     {
-        $response = $this->client->request(
-            method: $verb,
-            uri: $uri,
-            options: empty($payload) ? [] : [RequestOptions::FORM_PARAMS => $payload],
-        );
+        try {
+            $response = $this->client->request(
+                method: $verb,
+                uri: $uri,
+                options: empty($payload) ? [] : [RequestOptions::FORM_PARAMS => $payload],
+            );
+        } catch (GuzzleException $e) {
+            throw new NomiException($e->getMessage(), $e->getCode(), $e);
+        }
 
         if ($this->isUnsuccessful($response)) {
             $this->handleRequestError($response);
@@ -148,11 +137,30 @@ trait MakesHttpRequests
     /**
      * Handles the provided request error.
      *
-     * @throws \RuntimeException
+     * @throws \Nomiai\PhpSdk\Exceptions\NomiException
      */
     private function handleRequestError(ResponseInterface $response): never
     {
-        // TODO: Later, we'll throw exceptions based on code. For now, just throw.
-        throw new RuntimeException('Error: ' . $response->getStatusCode());
+        $error = json_decode($response->getBody()->getContents(), associative: true) ?: [];
+        $type = $error['type'] ?? null;
+
+        match ($type) {
+            // General
+            ErrorResponse::RATE_LIMIT_EXCEEDED => throw NomiException::rateLimitExceeded(),
+            ErrorResponse::INVALID_ROUTE_PARAMS => throw NomiException::invalidRouteParams(),
+            ErrorResponse::INVALID_CONTENT_TYPE => throw NomiException::invalidContentType(),
+
+            // Nomi / Chat:
+            ErrorResponse::INVALID_BODY => throw NomiException::invalidBody($error['error']['issues'] ?? []),
+            ErrorResponse::LIMIT_EXCEEDED => throw NomiException::limitExceeded(),
+            ErrorResponse::MESSAGE_LENGTH_LIMIT_EXCEEDED => NomiException::messageLengthLimitExceeded(),
+            ErrorResponse::NOMI_NOT_FOUND => throw NomiException::nomiNotFound(),
+            ErrorResponse::NOMI_NOT_READY => throw NomiException::nomiNotReady(),
+            ErrorResponse::NOMI_STILL_RESPONDING => throw NomiException::nomiStillResponding(),
+            ErrorResponse::ONGOING_VOICE_CALL_DETECTED => throw NomiException::ongoingVoiceCallDetected(),
+            ErrorResponse::NO_REPLY => throw NomiException::noReply(),
+        };
+
+        throw new NomiException();
     }
 }

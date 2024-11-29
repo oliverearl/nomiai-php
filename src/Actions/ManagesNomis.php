@@ -14,9 +14,6 @@ trait ManagesNomis
      *
      * @see https://api.nomi.ai/docs/reference/get-v1-nomis
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
-     *
      * @return array<int, \Nomiai\PhpSdk\Resources\Nomi>
      */
     public function getNomis(): array
@@ -30,9 +27,6 @@ trait ManagesNomis
      * Return the details of a specific Nomi associated to your account.
      *
      * @see https://api.nomi.ai/docs/reference/get-v1-nomis-id
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \JsonException
      */
     public function getNomi(string $id): Nomi
     {
