@@ -78,7 +78,7 @@ The library is under active development. Complete feature availability is planne
 |------------------------------------|-------------|:-------------|
 | Retrieve and view Nomis            | Yes         | v0.1.2-alpha |
 | Send and receive messages to Nomis | Yes         | v0.1.3-alpha |
-| Retrieve Nomi avatars              | No          |              |
+| Retrieve Nomi avatars              | Yes         | v0.1.5-alpha |
 | Retrieve rooms                     | No          |              |
 | Create rooms                       | No          |              |
 | Send messages into rooms           | No          |              |

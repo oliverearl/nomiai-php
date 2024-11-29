@@ -7,6 +7,8 @@ namespace Nomiai\PhpSdk;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\RequestOptions;
+use InvalidArgumentException;
+use Nomiai\PhpSdk\Actions\ManagesAvatars;
 use Nomiai\PhpSdk\Actions\ManagesChats;
 use Nomiai\PhpSdk\Actions\ManagesNomis;
 use Nomiai\PhpSdk\Traits\MakesHttpRequests;
@@ -14,6 +16,7 @@ use Nomiai\PhpSdk\Traits\MakesHttpRequests;
 class NomiAI
 {
     use MakesHttpRequests;
+    use ManagesAvatars;
     use ManagesChats;
     use ManagesNomis;
 
@@ -30,6 +33,10 @@ class NomiAI
         private readonly string $endpoint = self::DEFAULT_ENDPOINT,
         private ?ClientInterface $client = null,
     ) {
+        if (empty($this->token)) {
+            throw new InvalidArgumentException('NomiAI token is required.');
+        }
+
         $this->client ??= new Client([
             'base_uri' => $this->endpoint . '/',
             RequestOptions::HTTP_ERRORS => false,
