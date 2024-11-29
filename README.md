@@ -70,6 +70,29 @@ $conversation = $sdk->sendMessageToNomi($nomi, 'Hello!');
 $conversation = $sdk->sendMessage($nomi->uuid, 'World!'); 
 ```
 
+### Retrieving an avatar
+
+You can retrieve the avatar from a Nomi with either a Nomi object, or their corresponding UUID.
+
+```php
+/** @var \Nomiai\PhpSdk\NomiAI $sdk **/
+/** @var \Nomiai\PhpSdk\Resources\Nomi $nomi **/
+
+$avatar = $sdk->getAvatarFromNomi($nomi);
+
+// Or via the UUID:
+$avatar = $sdk->getAvatar($nomi->uuid);
+
+/*
+ * Avatar is an object that might get more functionality down the line. For now, 
+ * to get the underlying .webp image, access the avatar property.
+ */
+$webp = $avatar->avatar;
+
+// You can also retrieve the underlying image by casting the object to a string.
+$image = (string) $avatar;
+```
+
 ## Functionality
 
 The library is under active development. Complete feature availability is planned for the first major release.
@@ -78,7 +101,7 @@ The library is under active development. Complete feature availability is planne
 |------------------------------------|-------------|:-------------|
 | Retrieve and view Nomis            | Yes         | v0.1.2-alpha |
 | Send and receive messages to Nomis | Yes         | v0.1.3-alpha |
-| Retrieve Nomi avatars              | Yes         | v0.1.5-alpha |
+| Retrieve Nomi avatars              | Yes         | v0.1.6-alpha |
 | Retrieve rooms                     | No          |              |
 | Create rooms                       | No          |              |
 | Send messages into rooms           | No          |              |
