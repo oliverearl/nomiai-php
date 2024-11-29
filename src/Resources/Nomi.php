@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Nomiai\PhpSdk\Resources;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 use Nomiai\PhpSdk\Enums\Gender;
 use Nomiai\PhpSdk\Enums\RelationshipType;
-use RuntimeException;
 
 readonly class Nomi extends Resource
 {
@@ -44,7 +44,7 @@ readonly class Nomi extends Resource
     /**
      * Nomi constructor.
      *
-     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      * @throws \DateMalformedStringException
      */
     public function __construct(
@@ -63,13 +63,13 @@ readonly class Nomi extends Resource
             ? $gender
             : (
                 Gender::tryFrom($gender)
-                ?? throw new RuntimeException('The provided gender is invalid!')
+                ?? throw new InvalidArgumentException('The provided gender is invalid!')
             );
         $this->relationshipType = $relationshipType instanceof RelationshipType
             ? $relationshipType
             : (
                 RelationshipType::tryFrom($relationshipType)
-                ?? throw new RuntimeException('The provided relationship type is invalid!')
+                ?? throw new InvalidArgumentException('The provided relationship type is invalid!')
             );
     }
 
