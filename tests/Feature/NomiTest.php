@@ -8,8 +8,6 @@ use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Nomiai\PhpSdk\Constants\HttpMethod;
 use Nomiai\PhpSdk\Constants\HttpStatus;
-use Nomiai\PhpSdk\Enums\Gender;
-use Nomiai\PhpSdk\Enums\RelationshipType;
 use Nomiai\PhpSdk\NomiAI;
 use Nomiai\PhpSdk\Resources\Nomi;
 use Tomb1n0\GuzzleMockHandler\GuzzleMockHandler;
@@ -18,17 +16,9 @@ use Tomb1n0\GuzzleMockHandler\GuzzleMockResponse;
 describe('nomis', function (): void {
     describe('index', function (): void {
         it('can retrieve all nomis associated with an account', function (): void {
-            $nomi = fn(): array => [
-                'uuid' => $this->faker->uuid(),
-                'name' => $this->faker->name(),
-                'created' => $this->faker->date(Nomi::ISO8601),
-                'gender' => ($this->faker->randomElement(Gender::cases()))->value,
-                'relationshipType' => ($this->faker->randomElement(RelationshipType::cases()))->value,
-            ];
-
             $nomis = [
-                $nomi(),
-                $nomi(),
+                $this->nomi()->toArray(),
+                $this->nomi()->toArray(),
             ];
 
             $handler = new GuzzleMockHandler();
@@ -52,21 +42,15 @@ describe('nomis', function (): void {
 
     describe('show', function (): void {
         it('can retrieve a nomi associated with an account', function (): void {
-            $id = $this->faker->uuid();
-            $nomi = [
-                'uuid' => $id,
-                'name' => $this->faker->name(),
-                'created' => $this->faker->date(Nomi::ISO8601),
-                'gender' => ($this->faker->randomElement(Gender::cases()))->value,
-                'relationshipType' => ($this->faker->randomElement(RelationshipType::cases()))->value,
-            ];
+            $nomi = $this->nomi();
+            $id = $nomi->uuid;
 
             $handler = new GuzzleMockHandler();
             $response = new GuzzleMockResponse("/v1/nomis/{$id}");
             $response
                 ->withMethod(HttpMethod::GET)
                 ->withStatus(HttpStatus::OK)
-                ->withBody($nomi);
+                ->withBody($nomi->toArray());
             $handler->expect($response);
 
             $api = new NomiAI('', '', new Client(['handler' => HandlerStack::create($handler)]));
@@ -75,7 +59,7 @@ describe('nomis', function (): void {
             expect($retrievedNomi)
                 ->toBeInstanceOf(Nomi::class)
                 ->uuid->toEqual($id)
-                ->toArray()->toEqual($nomi);
+                ->toArray()->toEqual($nomi->toArray());
         });
     });
 });
