@@ -79,10 +79,10 @@ The library is under active development. Complete feature availability is planne
 | Retrieve and view Nomis            | Yes         | v0.1.2-alpha |
 | Send and receive messages to Nomis | Yes         | v0.1.3-alpha |
 | Retrieve Nomi avatars              | No          |              |
-| Retrieve group chats               | No          |              |
-| Create group chats                 | No          |              |
-| Send messages into group chats     | No          |              |
-| Delete group chats                 | No          |              |
+| Retrieve rooms                     | No          |              |
+| Create rooms                       | No          |              |
+| Send messages into rooms           | No          |              |
+| Delete rooms                       | No          |              |
 
 
 For more information regarding the Nomi.ai API, please check the documentation available 
