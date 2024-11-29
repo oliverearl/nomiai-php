@@ -23,7 +23,7 @@ it('will throw an exception if the relationship type is invalid', function (): v
         uuid: $this->faker->uuid(),
         name: $this->faker->name(),
         created: new DateTimeImmutable(),
-        gender:  $this->faker->randomElement(Gender::cases()),
+        gender: $this->faker->randomElement(Gender::cases()),
         relationshipType: 'not a valid relationship type',
     );
 })->throws(InvalidArgumentException::class);
@@ -33,7 +33,7 @@ it('can be made into an array', function (): void {
         uuid: $this->faker->uuid(),
         name: $this->faker->name(),
         created: new DateTimeImmutable(),
-        gender:  $this->faker->randomElement(Gender::cases()),
+        gender: $this->faker->randomElement(Gender::cases()),
         relationshipType: $this->faker->randomElement(RelationshipType::cases()),
     );
 

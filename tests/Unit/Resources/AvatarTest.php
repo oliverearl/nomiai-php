@@ -9,7 +9,7 @@ it('will throw an exception if the data coming back from the response is wrong',
 })->throws(InvalidArgumentException::class);
 
 it('can be made into an array', function (): void {
-   $avatar = Avatar::make([$this->faker->uuid()]); // This would normally be a raw webp.
+    $avatar = Avatar::make([$this->faker->uuid()]); // This would normally be a raw webp.
 
-   expect($avatar->toArray())->toEqual(['avatar' => $avatar->avatar]);
+    expect($avatar->toArray())->toEqual(['avatar' => $avatar->avatar]);
 });

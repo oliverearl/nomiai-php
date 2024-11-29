@@ -50,7 +50,7 @@ class TestCase extends BaseTestCase
 
         return new NomiAI(
             token: $this->faker->uuid(),
-            client:new Client(['handler' => HandlerStack::create($handler)]),
+            client: new Client(['handler' => HandlerStack::create($handler)]),
         );
     }
 
