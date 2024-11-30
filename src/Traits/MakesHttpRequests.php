@@ -159,6 +159,8 @@ trait MakesHttpRequests
             ErrorResponse::NOMI_STILL_RESPONDING => throw NomiException::nomiStillResponding(),
             ErrorResponse::ONGOING_VOICE_CALL_DETECTED => throw NomiException::ongoingVoiceCallDetected(),
             ErrorResponse::NO_REPLY => throw NomiException::noReply(),
+
+            default => throw new NomiException(),
         };
 
         throw new NomiException();
