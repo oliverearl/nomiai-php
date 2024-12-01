@@ -11,6 +11,7 @@ use InvalidArgumentException;
 use Nomiai\PhpSdk\Actions\ManagesAvatars;
 use Nomiai\PhpSdk\Actions\ManagesChats;
 use Nomiai\PhpSdk\Actions\ManagesNomis;
+use Nomiai\PhpSdk\Actions\ManagesRooms;
 use Nomiai\PhpSdk\Traits\MakesHttpRequests;
 
 class NomiAI
@@ -19,6 +20,7 @@ class NomiAI
     use ManagesAvatars;
     use ManagesChats;
     use ManagesNomis;
+    use ManagesRooms;
 
     /**
      * The default endpoint to use for the library.
