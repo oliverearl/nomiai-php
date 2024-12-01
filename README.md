@@ -93,6 +93,14 @@ $webp = $avatar->avatar;
 $image = (string) $avatar;
 ```
 
+### Retrieving, creating, modifying, and updating rooms
+
+TBA
+
+### Messaging within rooms
+
+TBA
+
 ## Functionality
 
 The library is under active development. Complete feature availability is planned for the first major release.
@@ -102,11 +110,10 @@ The library is under active development. Complete feature availability is planne
 | Retrieve and view Nomis            | Yes         | v0.1.2-alpha |
 | Send and receive messages to Nomis | Yes         | v0.1.3-alpha |
 | Retrieve Nomi avatars              | Yes         | v0.1.6-alpha |
-| Retrieve rooms                     | No          |              |
-| Create rooms                       | No          |              |
-| Send messages into rooms           | No          |              |
-| Delete rooms                       | No          |              |
-
+| Retrieve rooms                     | Yes         | v0.1.7-alpha |
+| Create rooms                       | Yes         | v0.1.7-alpha |
+| Send messages into rooms           | Yes         | v0.1.7-alpha |
+| Delete rooms                       | Yes         | v0.1.7-alpha |
 
 For more information regarding the Nomi.ai API, please check the documentation available 
 [here](https://api.nomi.ai/docs/reference).
