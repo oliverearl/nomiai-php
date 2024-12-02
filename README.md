@@ -93,11 +93,32 @@ $webp = $avatar->avatar;
 $image = (string) $avatar;
 ```
 
-### Retrieving, creating, modifying, and updating rooms
+### Rooms
+
+#### Retrieving rooms
+
+You can retrieve a numerically-indexed array of rooms associated with your account. Just like with Nomis, if you know
+the UUID of the room, you can also retrieve this individually.
+
+```php
+/** @var \Nomiai\PhpSdk\NomiAI $sdk **/
+
+/** @var array<int, \Nomiai\PhpSdk\Resources\Room> $myRooms */
+$myRooms = $sdk->getRooms();
+
+/** @var \Nomiai\PhpSdk\Resources\Room $myFavouriteRoom */
+$myFavouriteRoom = $sdk->getRoom(id: 'Your room UUID here');
+```
+
+#### Creating a room for your Nomis
 
 TBA
 
-### Messaging within rooms
+#### Updating and deleting rooms
+
+TBA
+
+#### Messaging within rooms
 
 TBA
 
