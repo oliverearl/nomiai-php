@@ -108,7 +108,7 @@ readonly class Room extends Resource
             created: $response['created'],
             updated: $response['updated'],
             status: $response['status'],
-            backchannelingEnabled: $response['backChannelingEnabled'],
+            backchannelingEnabled: $response['backchannelingEnabled'],
             nomis: $response['nomis'],
             note: $response['note'],
         );
@@ -123,7 +123,7 @@ readonly class Room extends Resource
             'created' => $this->created->format(self::ISO8601),
             'updated' => $this->updated->format(self::ISO8601),
             'status' => $this->status->value,
-            'backChannelingEnabled' => $this->backchannelingEnabled,
+            'backchannelingEnabled' => $this->backchannelingEnabled,
             'nomis' => array_map(fn(Nomi $nomi): array => $nomi->toArray(), $this->nomis),
             'note' => $this->note,
         ];

@@ -82,7 +82,7 @@ class TestCase extends BaseTestCase
             'created' => (new DateTimeImmutable())->format(Room::ISO8601),
             'updated' => (new DateTimeImmutable())->format(Room::ISO8601),
             'status' => $this->faker->randomElement(RoomStatus::cases())->value,
-            'backChannelingEnabled' => $this->faker->boolean(),
+            'backchannelingEnabled' => $this->faker->boolean(),
             'note' => $this->faker->realText(),
             'nomis' => [
                 $this->nomi()->toArray(),
