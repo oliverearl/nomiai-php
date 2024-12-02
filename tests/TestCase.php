@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Nomiai\PhpSdk\Tests;
 
+use DateTimeImmutable;
 use Faker\Factory;
 use Faker\Generator;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Nomiai\PhpSdk\Enums\Gender;
 use Nomiai\PhpSdk\Enums\RelationshipType;
+use Nomiai\PhpSdk\Enums\RoomStatus;
 use Nomiai\PhpSdk\NomiAI;
 use Nomiai\PhpSdk\Resources\Nomi;
+use Nomiai\PhpSdk\Resources\Room;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Tomb1n0\GuzzleMockHandler\GuzzleMockHandler;
 use Tomb1n0\GuzzleMockHandler\GuzzleMockResponse;
@@ -65,6 +68,26 @@ class TestCase extends BaseTestCase
             'created' => $this->faker->date(Nomi::ISO8601),
             'gender' => ($this->faker->randomElement(Gender::cases()))->value,
             'relationshipType' => ($this->faker->randomElement(RelationshipType::cases()))->value,
+        ]);
+    }
+
+    /**
+     * Generate a room for testing purposes.
+     */
+    public function room(): Room
+    {
+        return Room::make([
+            'uuid' => $this->faker->uuid(),
+            'name' => $this->faker->company(),
+            'created' => (new DateTimeImmutable())->format(Room::ISO8601),
+            'updated' => (new DateTimeImmutable())->format(Room::ISO8601),
+            'status' => $this->faker->randomElement(RoomStatus::cases())->value,
+            'backChannelingEnabled' => $this->faker->boolean(),
+            'note' => $this->faker->realText(),
+            'nomis' => [
+                $this->nomi()->toArray(),
+                $this->nomi()->toArray(),
+            ],
         ]);
     }
 }
