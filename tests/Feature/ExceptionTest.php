@@ -34,7 +34,7 @@ it('can produce the correct exception based on the error received from the respo
     // Human-readable keys for test output:
     $improvedKeys = array_map(
         static fn(string $key): string => ucfirst(strtolower(str_replace('_', ' ', $key))),
-        array_keys($errors)
+        array_keys($errors),
     );
 
     return array_map(
