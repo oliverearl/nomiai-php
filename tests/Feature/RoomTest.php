@@ -49,11 +49,75 @@ describe('rooms', function (): void {
             ->toArray()->toEqual($room->toArray());
     });
 
-    it('can create a room', function (): void {})->todo();
+    it('can create a room', function (): void {
+        $roomData = $this->room()->toArray();
 
-    it('can update a room', function (): void {})->todo();
+        $api = $this->dummy(
+            uri: '/v1/rooms',
+            method: HttpMethod::POST,
+            status: HttpStatus::CREATED,
+            body: $roomData,
+        );
 
-    it('can delete a room', function (): void {})->todo();
+        $room = $api->createRoom([
+            'name' => $roomData['name'],
+            'note' => $roomData['note'],
+            'backchannelingEnabled' => $roomData['backchanneling_enabled'],
+            'nomiUuids' => array_map(fn(array $nomi): string => $nomi['uuid'], $roomData['nomis']),
+        ]);
+
+        // This obviously assumes the Nomis are already present on the API.
+        expect($room)
+            ->toBeInstanceOf(Room::class)
+            ->name->toEqual($roomData['name'])
+            ->description->toEqual($roomData['description'])
+            ->backchannelingEnabled->toEqual($roomData['backchannelingEnabled']);
+    });
+
+    it('can update a room', function (): void {
+        // Assumes the room already exists on the API.
+        $room = $this->room();
+        $newName = $this->faker->company();
+        $newRoomData = Room::make(array_merge($room->toArray(), ['name' => $newName]))->toArray();
+
+        $api = $this->dummy(
+            uri: "/v1/rooms/{$room->uuid}",
+            method: HttpMethod::PUT,
+            status: HttpStatus::OK,
+            body: $newRoomData,
+        );
+
+        $requests = [
+            $api->updateRoom($room, ['name' => $newName]),
+            $api->updateRoomById($room->uuid, ['name' => $newName]),
+        ];
+
+        foreach ($requests as $request) {
+            expect($request)
+                ->toBeInstanceOf(Room::class)
+                ->toArray()->toEqual($newRoomData);
+        }
+    });
+
+    it('can delete a room', function (): void {
+        // Assumes the room already exists on the API.
+        $room = $this->room();
+
+        $api = $this->dummy(
+            uri: "/v1/rooms/{$room->uuid}",
+            method: HttpMethod::DELETE,
+            status: HttpStatus::NO_CONTENT,
+        );
+
+        $requests = [
+            $api->deleteRoom($room),
+            $api->deleteRoomById($room->uuid),
+        ];
+
+        foreach ($requests as $request) {
+            expect($request)->toBeTrue();
+        }
+    });
 });
 
 describe('room messages', function (): void {
