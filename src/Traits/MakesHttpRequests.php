@@ -85,7 +85,7 @@ trait MakesHttpRequests
     {
         $body = $this->rawRequest($verb, $uri, $payload);
 
-        return json_decode($body, associative: true) ?: throw new NomiException();
+        return json_decode($body, associative: true) ?? throw new NomiException();
     }
 
     /**
