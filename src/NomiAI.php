@@ -28,6 +28,11 @@ class NomiAI
     public const string DEFAULT_ENDPOINT = 'https://api.nomi.ai';
 
     /**
+     * The version of the API.
+     */
+    final public const string VERSION = '1.0.0';
+
+    /**
      * NomiAI constructor.
      */
     public function __construct(
