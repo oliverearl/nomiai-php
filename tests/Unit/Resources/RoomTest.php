@@ -24,3 +24,22 @@ it('can be made into an array', function (): void {
 
     expect($room->toArray())->toEqual($data);
 });
+
+it('can be created with existing objects without casting', function (): void {
+    $data = [
+        'uuid' => $this->faker->uuid(),
+        'name' => $this->faker->company(),
+        'created' => new DateTimeImmutable(),
+        'updated' => new DatetimeImmutable(),
+        'status' => $this->faker->randomElement(RoomStatus::cases()),
+        'backchannelingEnabled' => $this->faker->boolean(),
+        'note' => $this->faker->realText(),
+        'nomis' => [
+            $this->nomi()->toArray(),
+        ],
+    ];
+
+    $room = Room::make($data);
+
+    expect($room)->toBeInstanceOf(Room::class);
+});
