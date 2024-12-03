@@ -28,6 +28,9 @@ it('can produce the correct exception based on the error received from the respo
     $reflection = new ReflectionClass(ErrorResponse::class);
     $errors = $reflection->getConstants();
 
+    // Add a bogus one to test its fallback capabilities:
+    $errors['COMPLETELY_UNKNOWN_ERROR'] = 'UnknownError';
+
     // Human-readable keys for test output:
     $improvedKeys = array_map(
         static fn(string $key): string => ucfirst(strtolower(str_replace('_', ' ', $key))),
