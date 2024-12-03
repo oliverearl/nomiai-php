@@ -51,6 +51,7 @@ class NomiAI
                 'Authorization' => $this->token,
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
+                'User-Agent' => sprintf('Nomi.ai PHP SDK (%s)', self::VERSION),
             ],
         ]);
     }
