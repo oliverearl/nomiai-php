@@ -144,6 +144,7 @@ trait MakesHttpRequests
         $error = json_decode($response->getBody()->getContents(), associative: true) ?: [];
         $type = $error['type'] ?? null;
 
+        // Lookup tables are cool and absolutely not a code smell.
         match ($type) {
             // General
             ErrorResponse::RATE_LIMIT_EXCEEDED => throw NomiException::rateLimitExceeded(),
@@ -159,6 +160,18 @@ trait MakesHttpRequests
             ErrorResponse::NOMI_STILL_RESPONDING => throw NomiException::nomiStillResponding(),
             ErrorResponse::ONGOING_VOICE_CALL_DETECTED => throw NomiException::ongoingVoiceCallDetected(),
             ErrorResponse::NO_REPLY => throw NomiException::noReply(),
+
+            // Avatars:
+            ErrorResponse::NOT_FOUND => throw NomiException::notFound(),
+
+            // Rooms:
+            ErrorResponse::INSUFFICIENT_PLAN => throw NomiException::insufficientPlan(),
+            ErrorResponse::EXCEEDED_ROOM_LIMIT => throw NomiException::exceededRoomLimit(),
+            ErrorResponse::ROOM_NOMI_COUNT_TOO_SMALL => throw NomiException::roomNomiCountTooSmall(),
+            ErrorResponse::ROOM_NOMI_COUNT_TOO_LARGE => throw NomiException::roomNomiCountTooLarge(),
+            ErrorResponse::NOTE_NOT_ACCEPTED => throw NomiException::noteNotAccepted(),
+            ErrorResponse::NO_RESPONSE_FROM_SERVER => throw NomiException::noResponseFromServer(),
+            ErrorResponse::ROOM_NOT_FOUND => throw NomiException::roomNotFound(),
 
             default => throw new NomiException(),
         };

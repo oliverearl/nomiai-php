@@ -163,6 +163,106 @@ class NomiException extends RuntimeException
     }
 
     /**
+     * The exception thrown when an avatar cannot be found, for some reason.
+     *
+     * @see https://api.nomi.ai/docs/reference/get-v1-nomis-id-avatar
+     */
+    public static function notFound(): self
+    {
+        return new self('The specified Nomi avatar was not found.', HttpStatus::NOT_FOUND);
+    }
+
+    /**
+     * The exception thrown when a free user attempts to create a room.
+     *
+     * @see https://api.nomi.ai/docs/reference/post-v1-rooms
+     */
+    public static function insufficientPlan(): self
+    {
+        return new self('User plan is not entitled to room feature', HttpStatus::FORBIDDEN);
+    }
+
+    /**
+     * The exception thrown when the number of rooms on an account is exceeded.
+     *
+     * @see https://api.nomi.ai/docs/reference/post-v1-rooms
+     */
+    public static function exceededRoomLimit(): self
+    {
+        return new self(
+            'Account exceeded maximum room limit. Right now, user with subscription can have up to 10 rooms.',
+            HttpStatus::CONFLICT,
+        );
+    }
+
+    /**
+     * An exception thrown when the number of valid Nomi UUIDs provided is too small.
+     *
+     * @see https://api.nomi.ai/docs/reference/post-v1-rooms
+     */
+    public static function roomNomiCountTooSmall(): self
+    {
+        return new self(
+            '`nomiUuids` should contain at least 1 valid UUID from Nomis associated with this account.',
+            HttpStatus::BAD_REQUEST,
+        );
+    }
+
+    /**
+     * An exception thrown when the requested number of Nomis to a room is too great.
+     *
+     * @see https://api.nomi.ai/docs/reference/post-v1-rooms
+     */
+    public static function roomNomiCountTooLarge(): self
+    {
+        return new self(
+            '`nomiUuids` should contain at most 10 valid UUID from Nomis associated with this account.',
+            HttpStatus::BAD_REQUEST,
+        );
+    }
+
+    /**
+     * An exception caused by a bad room note.
+     *
+     * @see https://api.nomi.ai/docs/reference/post-v1-rooms
+     */
+    public static function noteNotAccepted(): self
+    {
+        return new self(
+            'There was a problem with your room note and we could not create your room. Please revise the note and try
+            again',
+            HttpStatus::BAD_REQUEST,
+        );
+    }
+
+    /**
+     * A rare exception resulting from a lack of response from the server when making a room request.
+     *
+     * @see https://api.nomi.ai/docs/reference/post-v1-rooms
+     */
+    public static function noResponseFromServer(): self
+    {
+        return new self(
+            'The server did not respond to the note update request. This is rare but will occur if there is a server
+            issue or if the server does not respond within 20 seconds.',
+            HttpStatus::INTERNAL_SERVER_ERROR,
+        );
+    }
+
+    /**
+     * An exception thrown when a given room cannot be found.
+     *
+     * @see https://api.nomi.ai/docs/reference/get-v1-rooms-id
+     */
+    public static function roomNotFound(): self
+    {
+        return new self(
+            'The specified room was not found. It may not exist or may not be associated with this account.',
+            HttpStatus::NOT_FOUND,
+        );
+    }
+
+    /**
      * Appends additional data to the exception object.
      *
      * @param array<string, mixed> $data

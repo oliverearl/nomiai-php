@@ -23,4 +23,13 @@ abstract readonly class ErrorResponse
 
     // Avatar-related
     public const string NOT_FOUND = 'NotFound';
+
+    // Room-related
+    public const string INSUFFICIENT_PLAN = 'InsufficientPlan';
+    public const string EXCEEDED_ROOM_LIMIT = 'ExceededRoomLimit';
+    public const string ROOM_NOMI_COUNT_TOO_SMALL = 'RoomNomiCountTooSmall';
+    public const string ROOM_NOMI_COUNT_TOO_LARGE = 'RoomNomiCountTooLarge';
+    public const string NOTE_NOT_ACCEPTED = 'NoteNotAccepted';
+    public const string NO_RESPONSE_FROM_SERVER = 'NoResponseFromServer';
+    public const string ROOM_NOT_FOUND = 'RoomNotFound';
 }
