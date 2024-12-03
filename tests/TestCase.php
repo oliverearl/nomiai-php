@@ -9,6 +9,7 @@ use Faker\Factory;
 use Faker\Generator;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\RequestOptions;
 use Nomiai\PhpSdk\Enums\Gender;
 use Nomiai\PhpSdk\Enums\RelationshipType;
 use Nomiai\PhpSdk\Enums\RoomStatus;
@@ -53,7 +54,10 @@ class TestCase extends BaseTestCase
 
         return new NomiAI(
             token: $this->faker->uuid(),
-            client: new Client(['handler' => HandlerStack::create($handler)]),
+            client: new Client([
+                RequestOptions::HTTP_ERRORS => false,
+                'handler' => HandlerStack::create($handler),
+            ]),
         );
     }
 
