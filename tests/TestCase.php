@@ -39,7 +39,7 @@ class TestCase extends BaseTestCase
      *
      * @param array<string, mixed> $headers
      */
-    public function dummy(string $uri, string $method, int $status, mixed $body = null, array $headers = []): NomiAI
+    public function dummy(string $uri, string $method, int $status, mixed $body = [], array $headers = []): NomiAI
     {
         $handler = new GuzzleMockHandler();
 
