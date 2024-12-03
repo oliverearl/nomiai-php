@@ -62,7 +62,7 @@ describe('rooms', function (): void {
         $room = $api->createRoom([
             'name' => $roomData['name'],
             'note' => $roomData['note'],
-            'backchannelingEnabled' => $roomData['backchanneling_enabled'],
+            'backchannelingEnabled' => $roomData['backchannelingEnabled'],
             'nomiUuids' => array_map(fn(array $nomi): string => $nomi['uuid'], $roomData['nomis']),
         ]);
 
@@ -70,7 +70,7 @@ describe('rooms', function (): void {
         expect($room)
             ->toBeInstanceOf(Room::class)
             ->name->toEqual($roomData['name'])
-            ->description->toEqual($roomData['description'])
+            ->note->toEqual($roomData['note'])
             ->backchannelingEnabled->toEqual($roomData['backchannelingEnabled']);
     });
 
