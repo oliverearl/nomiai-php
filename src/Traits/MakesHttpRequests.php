@@ -142,7 +142,7 @@ trait MakesHttpRequests
     private function handleRequestError(ResponseInterface $response): never
     {
         $error = json_decode($response->getBody()->getContents(), associative: true) ?: [];
-        $type = $error['type'] ?? null;
+        $type = $error['error']['type'] ?? null;
 
         // Lookup tables are cool and absolutely not a code smell.
         match ($type) {
