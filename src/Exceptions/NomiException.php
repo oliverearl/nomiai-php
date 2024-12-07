@@ -263,6 +263,43 @@ class NomiException extends RuntimeException
     }
 
     /**
+     * An exception thrown when a room is not yet ready to receive messages.
+     *
+     * @see https://api.nomi.ai/docs/reference/post-v1-rooms-id-chat-request
+     */
+    public static function roomStillCreating(): self
+    {
+        return new self(
+            'Immediately after the creation of a room, there is a short period of several seconds before any messages
+            can be sent to the room.',
+            HttpStatus::SERVICE_UNAVAILABLE,
+        );
+    }
+
+    /**
+     * An exception thrown when a Nomi cannot be found in a room.
+     *
+     * @see https://api.nomi.ai/docs/reference/post-v1-rooms-id-chat-request
+     */
+    public static function roomNomiNotFound(): self
+    {
+        return new self('The specified Nomi is not found within the specified room.', HttpStatus::NOT_FOUND);
+    }
+
+    /**
+     * An exception thrown when a Nomi is already responding to a message.
+     *
+     * @see https://api.nomi.ai/docs/reference/post-v1-rooms-id-chat-request
+     */
+    public static function roomNomiNotReadyForMessage(): self
+    {
+        return new self(
+            'The Nomi is already replying to a user message and cannot reply to this message.',
+            HttpStatus::CONFLICT,
+        );
+    }
+
+    /**
      * Appends additional data to the exception object.
      *
      * @param array<string, mixed> $data

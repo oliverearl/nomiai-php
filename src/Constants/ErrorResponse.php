@@ -32,4 +32,9 @@ abstract readonly class ErrorResponse
     public const string NOTE_NOT_ACCEPTED = 'NoteNotAccepted';
     public const string NO_RESPONSE_FROM_SERVER = 'NoResponseFromServer';
     public const string ROOM_NOT_FOUND = 'RoomNotFound';
+
+    // Room message related
+    public const string ROOM_STILL_CREATING = 'RoomStillCreating';
+    public const string ROOM_NOMI_NOT_FOUND = 'RoomNomiNotFound';
+    public const string ROOM_NOMI_NOT_READY_FOR_MESSAGE = 'RoomNomiNotReadyForMessage';
 }
