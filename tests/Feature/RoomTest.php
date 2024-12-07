@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Nomiai\PhpSdk\Constants\HttpMethod;
 use Nomiai\PhpSdk\Constants\HttpStatus;
+use Nomiai\PhpSdk\Resources\Message;
 use Nomiai\PhpSdk\Resources\Room;
 
 describe('rooms', function (): void {
@@ -121,7 +122,63 @@ describe('rooms', function (): void {
 });
 
 describe('room messages', function (): void {
-    it('can send a message to a room', function (): void {})->todo();
+    it('can send a message to a room', function (): void {
+        $room = $this->room();
+        $message = $this->faker->sentence();
 
-    it('can request a nomi post a message to a room', function (): void {})->todo();
+        $api = $this->dummy(
+            uri: "/v1/rooms/{$room->uuid}/chat",
+            method: HttpMethod::POST,
+            status: HttpStatus::CREATED,
+            body: [
+                'sentMessage' => [
+                    'uuid' => $this->faker->uuid(),
+                    'text' => $message,
+                    'sent' => (new DateTimeImmutable())->format(Room::ISO8601),
+                ],
+            ],
+        );
+
+        $replies = [
+            $api->sendMessageToRoom($room, $message),
+            $api->sendMessageToRoomById($room->uuid, $message),
+        ];
+
+        foreach ($replies as $reply) {
+            expect($reply)
+                ->toBeInstanceOf(Message::class)
+                ->text->toEqual($message);
+        }
+    });
+
+    it('can request a nomi post a message to a room', function (): void {
+        $room = $this->room();
+        $nomiToRequest = $room->nomis[0];
+        $message = $this->faker->sentence();
+
+        $api = $this->dummy(
+            uri: "/v1/rooms/{$room->uuid}/chat/request",
+            method: HttpMethod::POST,
+            status: HttpStatus::OK,
+            body: [
+                'replyMessage' => [
+                    'uuid' => $this->faker->uuid(),
+                    'text' => $message,
+                    'sent' => (new DateTimeImmutable())->format(Room::ISO8601),
+                ],
+            ],
+        );
+
+        $requests = [
+            $api->requestNomiToMessageRoom($room, $nomiToRequest),
+            $api->requestNomiByIdToMessageRoom($room, $nomiToRequest->uuid),
+            $api->requestNomiByIdToMessageRoomById($room->uuid, $nomiToRequest->uuid),
+        ];
+
+        foreach ($requests as $request) {
+            expect($request)
+                ->toBeInstanceOf(Message::class)
+                ->text->toEqual($message);
+        }
+    });
 });
