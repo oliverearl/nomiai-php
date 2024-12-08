@@ -173,6 +173,11 @@ trait MakesHttpRequests
             ErrorResponse::NO_RESPONSE_FROM_SERVER => throw NomiException::noResponseFromServer(),
             ErrorResponse::ROOM_NOT_FOUND => throw NomiException::roomNotFound(),
 
+            // Room messages:
+            ErrorResponse::ROOM_STILL_CREATING => throw NomiException::roomStillCreating(),
+            ErrorResponse::ROOM_NOMI_NOT_FOUND => throw NomiException::roomNomiNotFound(),
+            ErrorResponse::ROOM_NOMI_NOT_READY_FOR_MESSAGE => throw NomiException::roomNomiNotReadyForMessage(),
+
             default => throw new NomiException(),
         };
 
