@@ -32,9 +32,11 @@ readonly class RoomRequest implements \JsonSerializable
             'nomiUuids' => is_array($this->nomiUuids)
                 ? array_map(fn(string|Nomi $nomi): string => $nomi instanceof Nomi
                     ? $nomi->uuid
-                    : $nomi, $this->nomiUuids)
+                    : $nomi,
+                    $this->nomiUuids,
+                )
                 : null,
-        ]);
+        ], static fn (mixed $v): bool => $v !== null);
     }
 
     /** @inheritDoc */
