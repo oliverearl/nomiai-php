@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nomiai\PhpSdk\Actions;
 
+use InvalidArgumentException;
+use Nomiai\PhpSdk\Requests\RoomRequest;
 use Nomiai\PhpSdk\Resources\Message;
 use Nomiai\PhpSdk\Resources\Nomi;
 use Nomiai\PhpSdk\Resources\Room;
@@ -42,11 +44,13 @@ trait ManagesRooms
      *
      * @param array<string, mixed> $request
      *
+     * @throws \InvalidArgumentException
+     *
      * @see https://api.nomi.ai/docs/reference/post-v1-rooms
      */
-    public function createRoom(array $request): Room
+    public function createRoom(array|RoomRequest $request): Room
     {
-        $response = $this->post('/v1/rooms', $request);
+        $response = $this->post('/v1/rooms', $this->validateUpdateData($request));
 
         return Room::make($response);
     }
@@ -58,7 +62,7 @@ trait ManagesRooms
      *
      * @see https://api.nomi.ai/docs/reference/put-v1-rooms-id
      */
-    public function updateRoom(Room $room, array $update): Room
+    public function updateRoom(Room $room, array|RoomRequest $update): Room
     {
         return $this->updateRoomById($room->uuid, $update);
     }
@@ -68,11 +72,13 @@ trait ManagesRooms
      *
      * @param array<string, mixed> $update
      *
+     * @throws \InvalidArgumentException
+     *
      * @see https://api.nomi.ai/docs/reference/put-v1-rooms-id
      */
-    public function updateRoomById(string $id, array $update): Room
+    public function updateRoomById(string $id, array|RoomRequest $update): Room
     {
-        $response = $this->put("/v1/rooms/{$id}", $update);
+        $response = $this->put("/v1/rooms/{$id}", $this->validateUpdateData($update));
 
         return Room::make($response);
     }
@@ -152,5 +158,27 @@ trait ManagesRooms
         $response = $this->post("/v1/rooms/{$roomId}/chat/request", ['nomiUuid' => $nomiId]);
 
         return Message::make($response['replyMessage']);
+    }
+
+    /**
+     * Ensures that a request is not empty.
+     *
+     * @param array<string, mixed>|\Nomiai\PhpSdk\Requests\RoomRequest $request
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return array<string, mixed>
+     */
+    private function validateUpdateData(array|RoomRequest $request): array
+    {
+        $data = $request instanceof RoomRequest
+            ? $request->toArray()
+            : $request;
+
+        if ($data === []) {
+            throw new InvalidArgumentException('Request cannot be empty.');
+        }
+
+        return $data;
     }
 }

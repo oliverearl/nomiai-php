@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Nomiai\PhpSdk\Constants\HttpMethod;
 use Nomiai\PhpSdk\Constants\HttpStatus;
+use Nomiai\PhpSdk\Requests\RoomRequest;
 use Nomiai\PhpSdk\Resources\Message;
 use Nomiai\PhpSdk\Resources\Room;
 
@@ -75,6 +76,16 @@ describe('rooms', function (): void {
             ->backchannelingEnabled->toEqual($roomData['backchannelingEnabled']);
     });
 
+    it('cannot create an empty room', function (): void {
+        $api = $this->dummy(
+            uri: '/v1/rooms',
+            method: HttpMethod::POST,
+            status: HttpStatus::CREATED,
+        );
+
+        $api->createRoom([]);
+    })->throws(InvalidArgumentException::class);
+
     it('can update a room', function (): void {
         // Assumes the room already exists on the API.
         $room = $this->room();
@@ -99,6 +110,20 @@ describe('rooms', function (): void {
                 ->toArray()->toEqual($newRoomData);
         }
     });
+
+    it('cannot send an empty update', function (): void {
+        $room = $this->room();
+        $update = new RoomRequest();
+
+        $api = $this->dummy(
+            uri: "/v1/rooms/{$room->uuid}",
+            method: HttpMethod::PUT,
+            status: HttpStatus::OK,
+        );
+
+
+       $api->updateRoom($room, $update);
+    })->throws(InvalidArgumentException::class);
 
     it('can delete a room', function (): void {
         // Assumes the room already exists on the API.
