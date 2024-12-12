@@ -30,13 +30,14 @@ readonly class RoomRequest implements \JsonSerializable
             'note' => $this->note,
             'backchannelingEnabled' => $this->backchannelingEnabled,
             'nomiUuids' => is_array($this->nomiUuids)
-                ? array_map(fn(string|Nomi $nomi): string => $nomi instanceof Nomi
+                ? array_map(
+                    fn(string|Nomi $nomi): string => $nomi instanceof Nomi
                     ? $nomi->uuid
                     : $nomi,
                     $this->nomiUuids,
                 )
                 : null,
-        ], static fn (mixed $v): bool => $v !== null);
+        ], static fn(mixed $v): bool => $v !== null);
     }
 
     /** @inheritDoc */
