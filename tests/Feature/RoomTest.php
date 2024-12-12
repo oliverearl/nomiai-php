@@ -122,7 +122,7 @@ describe('rooms', function (): void {
         );
 
 
-       $api->updateRoom($room, $update);
+        $api->updateRoom($room, $update);
     })->throws(InvalidArgumentException::class);
 
     it('can delete a room', function (): void {
