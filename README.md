@@ -112,15 +112,90 @@ $myFavouriteRoom = $sdk->getRoom(id: 'Your room UUID here');
 
 #### Creating a room for your Nomis
 
-TBA
+Creating a room for Nomis can be done with *either* an array of Nomi objects, or an array containing their respective
+UUIDs. A `RoomRequest` object exists to help you with this process, or you can use an associative array.
+
+```php
+/** @var \Nomiai\PhpSdk\NomiAI $sdk **/
+
+// Get all Nomis:
+/** @var array<int, \Nomiai\PhpSdk\Resources\Nomi> $nomis **/
+$nomis = $sdk->getNomis();
+
+$request = new RoomRequest(
+    name: 'Nomi HQ',
+    note: 'The coolest place for Nomis to hang out',
+    backchannelingEnabled: true,
+    nomiUuids: $nomis,
+);
+
+/** @var \Nomiai\PhpSdk\Resources\Room $room */
+$room = $sdk->createRoom($request);
+```
 
 #### Updating and deleting rooms
 
-TBA
+Updating an existing room can also be done with a `RoomRequest` object, or an associative array containing the values
+you wish to change. Whatever you choose, it's a good idea not to include fields you don't want to update.
+
+```php
+/** @var \Nomiai\PhpSdk\NomiAI $sdk **/
+/** @var \Nomiai\PhpSdk\Resources\Room $room **/
+
+$request = [
+    'name' => 'The New Nomi HQ!',
+];
+
+$room = $sdk->updateRoom($room, $request);
+
+// You can also update a room by its UUID, for example if you don't have the full object.
+$room = $sdk->updateRoomById($room->uuid, $request);
+```
+
+Deleting a room is straightforward. These methods will simply return `true` as they will throw an appropriate
+exception if something goes wrong.
+
+```php
+/** @var \Nomiai\PhpSdk\NomiAI $sdk **/
+/** @var \Nomiai\PhpSdk\Resources\Room $room **/
+
+$sdk->deleteRoom($room);
+
+// You can also delete it by its UUID
+$sdk->deleteRoomById($room->uuid);
+```
 
 #### Messaging within rooms
 
-TBA
+Sending a message into a room is easy. Be aware rooms do take time to initialise, so don't send a message to them
+immediately after creation. The message that was sent is returned as the result.
+
+
+```php
+/** @var \Nomiai\PhpSdk\NomiAI $sdk **/
+/** @var \Nomiai\PhpSdk\Resources\Room $room **/
+
+$message = 'Hello friends!';
+$conversation = $sdk->sendMessageToRoom($room, $message);
+
+// Or via UUID:
+$conversation = $sdk->sendMessageToRoomById($room->uuid, $message);
+```
+
+Nomis can be prompted to send a message to a room. For more information about this, please check the 
+[Nomi.ai](https://www.nomi.ai) website.
+
+```php
+/** @var \Nomiai\PhpSdk\NomiAI $sdk **/
+/** @var \Nomiai\PhpSdk\Resources\Nomi $nomi **/
+/** @var \Nomiai\PhpSdk\Resources\Room $room **/
+
+$message = $sdk->requestNomiToMessageRoom($nomi, $room);
+
+// If you only have the Nomi UUID, and/or the room UUID, you have options:
+$message = $sdk->requestNomiByIdToMessageRoom($nomi->uuid, $room);
+$message = $sdk->requestNomiByIdToMessageRoomById($nomi->uuid, $room->uuid);
+```
 
 ## Functionality
 
