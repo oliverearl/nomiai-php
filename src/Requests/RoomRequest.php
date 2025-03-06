@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Nomiai\PhpSdk\Requests;
 
+use JsonSerializable;
 use Nomiai\PhpSdk\Resources\Nomi;
 
-readonly class RoomRequest implements \JsonSerializable
+readonly class RoomRequest implements JsonSerializable
 {
     /**
      * RoomRequest constructor.
