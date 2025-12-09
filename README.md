@@ -1,7 +1,7 @@
 # Nomi.ai PHP Library
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/oliverearl/nomiai-php.svg?style=flat-square)](https://packagist.org/packages/oliverearl/nomiai-php)
-[![Tests](https://img.shields.io/github/actions/workflow/status/oliverearl/nomiai-php/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/oliverearl/nomiai-php/actions/workflows/run-tests.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/oliverearl/nomiai-php/run-tests.yml?branch=master&label=tests&style=flat-square)](https://github.com/oliverearl/nomiai-php/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/oliverearl/nomiai-php.svg?style=flat-square)](https://packagist.org/packages/oliverearl/nomiai-php)
 
 This is a lightweight, PHP library for interacting with the Nomi.ai REST API. [Nomi AI](https://www.nomi.ai) is a
