@@ -13,7 +13,7 @@ describe('rooms', function (): void {
         $room = $this->room();
 
         $api = $this->dummy(
-            uri: '/v1/rooms',
+            uri: '/rooms',
             method: HttpMethod::GET,
             status: HttpStatus::OK,
             body: [
@@ -38,7 +38,7 @@ describe('rooms', function (): void {
         $room = $this->room();
 
         $api = $this->dummy(
-            uri: "/v1/rooms/{$room->uuid}",
+            uri: "/rooms/{$room->uuid}",
             method: HttpMethod::GET,
             status: HttpStatus::OK,
             body: $room->toArray(),
@@ -55,7 +55,7 @@ describe('rooms', function (): void {
         $roomData = $this->room()->toArray();
 
         $api = $this->dummy(
-            uri: '/v1/rooms',
+            uri: '/rooms',
             method: HttpMethod::POST,
             status: HttpStatus::CREATED,
             body: $roomData,
@@ -78,7 +78,7 @@ describe('rooms', function (): void {
 
     it('cannot create an empty room', function (): void {
         $api = $this->dummy(
-            uri: '/v1/rooms',
+            uri: '/rooms',
             method: HttpMethod::POST,
             status: HttpStatus::CREATED,
         );
@@ -93,7 +93,7 @@ describe('rooms', function (): void {
         $newRoomData = Room::make(array_merge($room->toArray(), ['name' => $newName]))->toArray();
 
         $api = $this->dummy(
-            uri: "/v1/rooms/{$room->uuid}",
+            uri: "/rooms/{$room->uuid}",
             method: HttpMethod::PUT,
             status: HttpStatus::OK,
             body: $newRoomData,
@@ -116,7 +116,7 @@ describe('rooms', function (): void {
         $update = new RoomRequest();
 
         $api = $this->dummy(
-            uri: "/v1/rooms/{$room->uuid}",
+            uri: "/rooms/{$room->uuid}",
             method: HttpMethod::PUT,
             status: HttpStatus::OK,
         );
@@ -130,7 +130,7 @@ describe('rooms', function (): void {
         $room = $this->room();
 
         $api = $this->dummy(
-            uri: "/v1/rooms/{$room->uuid}",
+            uri: "/rooms/{$room->uuid}",
             method: HttpMethod::DELETE,
             status: HttpStatus::NO_CONTENT,
         );
@@ -152,7 +152,7 @@ describe('room messages', function (): void {
         $message = $this->faker->sentence();
 
         $api = $this->dummy(
-            uri: "/v1/rooms/{$room->uuid}/chat",
+            uri: "/rooms/{$room->uuid}/chat",
             method: HttpMethod::POST,
             status: HttpStatus::CREATED,
             body: [
@@ -182,7 +182,7 @@ describe('room messages', function (): void {
         $message = $this->faker->sentence();
 
         $api = $this->dummy(
-            uri: "/v1/rooms/{$room->uuid}/chat/request",
+            uri: "/rooms/{$room->uuid}/chat/request",
             method: HttpMethod::POST,
             status: HttpStatus::OK,
             body: [

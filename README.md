@@ -230,6 +230,12 @@ Laravel Pint is used to maintain the PER coding style. The linter can be run usi
 composer format
 ```
 
+PHPStan (level 8) is used for static analysis to catch type errors:
+
+```bash
+composer analyse
+```
+
 There are Pest architecture tests that also attempt to maintain certain conventions, including the use of strict
 typing where possible.
 

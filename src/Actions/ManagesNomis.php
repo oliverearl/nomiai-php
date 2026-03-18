@@ -18,7 +18,7 @@ trait ManagesNomis
      */
     public function getNomis(): array
     {
-        $response = $this->get('/v1/nomis');
+        $response = $this->get('/nomis');
 
         return array_map(fn(array $n): Nomi => Nomi::make($n), $response['nomis']);
     }
@@ -30,7 +30,7 @@ trait ManagesNomis
      */
     public function getNomi(string $id): Nomi
     {
-        $response = $this->get("/v1/nomis/{$id}");
+        $response = $this->get("/nomis/{$id}");
 
         return Nomi::make($response);
     }

@@ -29,7 +29,9 @@ abstract readonly class Resource implements JsonSerializable
      */
     abstract public function toArray(): array;
 
-    /** @inheritDoc */
+    /**
+     * @return array<string, mixed>
+     */
     public function jsonSerialize(): array
     {
         return $this->toArray();

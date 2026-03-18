@@ -14,9 +14,10 @@ readonly class MessageSet extends Resource
     /** @inheritDoc */
     public static function make(array $response): static
     {
-        return new self(
-            sent: Message::make($response['sentMessage']),
-            reply: Message::make($response['replyMessage']),
+        /** @phpstan-ignore new.static */
+        return new static(
+            Message::make($response['sentMessage']),
+            Message::make($response['replyMessage']),
         );
     }
 

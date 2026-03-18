@@ -96,13 +96,14 @@ readonly class Room extends Resource
             ? $updated
             : new DateTimeImmutable($updated);
 
-        $this->nomis = array_map(fn(array $nomi): Nomi => Nomi::make($nomi), $nomis);
+        $this->nomis = array_values(array_map(fn(array $nomi): Nomi => Nomi::make($nomi), $nomis));
     }
 
     /** @inheritDoc */
     public static function make(array $response): static
     {
-        return new self(
+        /** @phpstan-ignore new.static */
+        return new static(
             uuid: $response['uuid'],
             name: $response['name'],
             created: $response['created'],

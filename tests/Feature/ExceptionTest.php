@@ -13,7 +13,7 @@ it('can produce the correct exception based on the error received from the respo
      * can be returned from it. They're all going to return 500, also, since that's not important.
      */
     $api = $this->dummy(
-        '/v1/nomis',
+        '/nomis',
         HttpMethod::GET,
         HttpStatus::INTERNAL_SERVER_ERROR,
         [

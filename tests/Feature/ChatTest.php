@@ -30,7 +30,7 @@ describe('chats', function () {
         );
 
         $api = $this->dummy(
-            uri: "/v1/nomis/{$nomiId}/chat",
+            uri: "/nomis/{$nomiId}/chat",
             method: HttpMethod::POST,
             status: HttpStatus::OK,
             body: $messageSet->toArray(),

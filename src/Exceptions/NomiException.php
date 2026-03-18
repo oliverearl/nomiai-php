@@ -34,6 +34,32 @@ class NomiException extends RuntimeException
     }
 
     /**
+     * Exception caused by missing or invalid API authorization.
+     *
+     * @see https://api.nomi.ai/docs/
+     */
+    public static function unauthorized(): self
+    {
+        return new self(
+            'No Authorization header is provided or the provided API key is not associated with a Nomi.ai account.',
+            HttpStatus::UNAUTHORIZED,
+        );
+    }
+
+    /**
+     * Exception caused by an invalid API key format.
+     *
+     * @see https://api.nomi.ai/docs/
+     */
+    public static function invalidApiKey(): self
+    {
+        return new self(
+            'The Authorization header value is not in a valid UUID format.',
+            HttpStatus::BAD_REQUEST,
+        );
+    }
+
+    /**
      * Exception caused by not being able to locate a specified Nomi.
      *
      * @see https://api.nomi.ai/docs/reference/get-v1-nomis-id
@@ -147,6 +173,8 @@ class NomiException extends RuntimeException
 
     /**
      * An exception caused by an explicitly bad request.
+     *
+     * @param  array<string, mixed>  $body
      *
      * @see https://api.nomi.ai/docs/reference/post-v1-nomis-id-chat
      */
@@ -297,6 +325,30 @@ class NomiException extends RuntimeException
             'The Nomi is already replying to a user message and cannot reply to this message.',
             HttpStatus::CONFLICT,
         );
+    }
+
+    /**
+     * An exception thrown when a room message exceeds the character limit.
+     *
+     * @see https://api.nomi.ai/docs/reference/post-v1-rooms-id-chat
+     */
+    public static function messageCharacterLimitExceeded(): self
+    {
+        return new self(
+            'The provided `messageText` is too long. Maximum message length is 800 characters for rooms.',
+            HttpStatus::PAYLOAD_TOO_LARGE,
+        );
+    }
+
+    /**
+     * Returns the issues array from InvalidBody errors, if available.
+     *
+     * @return array<string, mixed>
+     */
+    public function getIssues(): array
+    {
+        // If data has 'issues' key, return that, otherwise return all data (already issues)
+        return $this->data['issues'] ?? $this->data;
     }
 
     /**

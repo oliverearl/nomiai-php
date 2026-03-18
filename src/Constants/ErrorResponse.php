@@ -6,6 +6,10 @@ namespace Nomiai\PhpSdk\Constants;
 
 abstract readonly class ErrorResponse
 {
+    // Authentication
+    public const string UNAUTHORIZED = 'Unauthorized';
+    public const string INVALID_API_KEY = 'InvalidAPIKey';
+
     // Generic types
     public const string RATE_LIMIT_EXCEEDED = 'RateLimitExceeded';
     public const string INVALID_ROUTE_PARAMS = 'InvalidRouteParams';
@@ -18,7 +22,7 @@ abstract readonly class ErrorResponse
     public const string NOMI_STILL_RESPONDING = 'NomiStillResponding';
     public const string NOMI_NOT_READY = 'NomiNotReady';
     public const string ONGOING_VOICE_CALL_DETECTED = 'OngoingVoiceCallDetected';
-    public const string MESSAGE_LENGTH_LIMIT_EXCEEDED = 'MesageLengthLimitExceeded';
+    public const string MESSAGE_LENGTH_LIMIT_EXCEEDED = 'MessageLengthLimitExceeded';
     public const string LIMIT_EXCEEDED = 'LimitExceeded';
 
     // Avatar-related
@@ -37,4 +41,5 @@ abstract readonly class ErrorResponse
     public const string ROOM_STILL_CREATING = 'RoomStillCreating';
     public const string ROOM_NOMI_NOT_FOUND = 'RoomNomiNotFound';
     public const string ROOM_NOMI_NOT_READY_FOR_MESSAGE = 'RoomNomiNotReadyForMessage';
+    public const string MESSAGE_CHARACTER_LIMIT_EXCEEDED = 'MessageCharacterLimitExceeded';
 }

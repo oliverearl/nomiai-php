@@ -1,0 +1,41 @@
+feat: comprehensive SDK improvements with validation, PHPStan, and open-source essentials
+
+BREAKING CHANGES: None - all changes are backward compatible
+
+Features:
+- Add client-side validation for message/room length limits
+- Add ValidationException for validation errors
+- Add API version pinning via constructor parameter
+- Add authentication error handling (Unauthorized, InvalidAPIKey)
+- Add getIssues() method to NomiException for detailed error info
+- Add MESSAGE_CHARACTER_LIMIT_EXCEEDED for room messages
+
+Bug Fixes:
+- Fix critical HTTP encoding bug (FORM_PARAMS -> JSON)
+- Fix typo in MESSAGE_LENGTH_LIMIT_EXCEEDED constant
+- Add missing ERROR and TRANSCRIPTION_ERROR to RoomStatus enum
+- Fix nullable client issue in NomiAI constructor
+
+Quality & Tooling:
+- Add PHPStan level 8 static analysis (0 errors)
+- Add PHPStan CI workflow
+- Add code coverage reporting with 80% minimum
+- Add 30+ new unit tests (94 tests total, 163 assertions)
+
+Open-Source:
+- Add CONTRIBUTING.md with development guidelines
+- Add CODE_OF_CONDUCT.md (Contributor Covenant 2.0)
+- Add SECURITY.md with disclosure policy
+- Add .env.example configuration template
+- Populate CHANGELOG.md with version history
+- Update AGENTS.md with comprehensive project guide
+
+Documentation:
+- Update README with PHPStan references
+- Add validation behavior documentation
+- Update all method signatures with @throws annotations
+
+Tests: 94 passed (163 assertions, 0 failures)
+Static Analysis: PHPStan level 8 - 0 errors
+Code Style: Laravel Pint (PER) - 0 violations
+
