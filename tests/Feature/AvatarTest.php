@@ -12,7 +12,7 @@ describe('avatars', function (): void {
         $image = 'Definitely a 1px webp image';
 
         $api = $this->dummy(
-            uri: "/v1/nomis/{$nomi->uuid}/avatar",
+            uri: "/nomis/{$nomi->uuid}/avatar",
             method: HttpMethod::GET,
             status: HttpStatus::OK,
             body: $image,

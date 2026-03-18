@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nomiai\PhpSdk\Actions;
 
 use InvalidArgumentException;
+use Nomiai\PhpSdk\Exceptions\ValidationException;
 use Nomiai\PhpSdk\Requests\RoomRequest;
 use Nomiai\PhpSdk\Resources\Message;
 use Nomiai\PhpSdk\Resources\Nomi;
@@ -14,6 +15,21 @@ use Nomiai\PhpSdk\Resources\Room;
 trait ManagesRooms
 {
     /**
+     * Maximum message length for room chats.
+     */
+    private const int MAX_ROOM_MESSAGE_LENGTH = 800;
+
+    /**
+     * Maximum room name length.
+     */
+    private const int MAX_ROOM_NAME_LENGTH = 100;
+
+    /**
+     * Maximum room note length.
+     */
+    private const int MAX_ROOM_NOTE_LENGTH = 1000;
+
+    /**
      * Returns all the rooms that are associated with your account.
      *
      * @see https://api.nomi.ai/docs/reference/get-v1-rooms
@@ -22,7 +38,7 @@ trait ManagesRooms
      */
     public function getRooms(): array
     {
-        $response = $this->get('/v1/rooms');
+        $response = $this->get('/rooms');
 
         return array_map(fn(array $n): Room => Room::make($n), $response['rooms']);
     }
@@ -34,7 +50,7 @@ trait ManagesRooms
      */
     public function getRoom(string $id): Room
     {
-        $response = $this->get("/v1/rooms/{$id}");
+        $response = $this->get("/rooms/{$id}");
 
         return Room::make($response);
     }
@@ -45,12 +61,13 @@ trait ManagesRooms
      * @param array<string, mixed> $request
      *
      * @throws \InvalidArgumentException
+     * @throws \Nomiai\PhpSdk\Exceptions\ValidationException
      *
      * @see https://api.nomi.ai/docs/reference/post-v1-rooms
      */
     public function createRoom(array|RoomRequest $request): Room
     {
-        $response = $this->post('/v1/rooms', $this->validateUpdateData($request));
+        $response = $this->post('/rooms', $this->validateUpdateData($request));
 
         return Room::make($response);
     }
@@ -59,6 +76,8 @@ trait ManagesRooms
      * Update an existing room with new information or Nomis.
      *
      * @param array<string, mixed> $update
+     *
+     * @throws \Nomiai\PhpSdk\Exceptions\ValidationException
      *
      * @see https://api.nomi.ai/docs/reference/put-v1-rooms-id
      */
@@ -73,12 +92,13 @@ trait ManagesRooms
      * @param array<string, mixed> $update
      *
      * @throws \InvalidArgumentException
+     * @throws \Nomiai\PhpSdk\Exceptions\ValidationException
      *
      * @see https://api.nomi.ai/docs/reference/put-v1-rooms-id
      */
     public function updateRoomById(string $id, array|RoomRequest $update): Room
     {
-        $response = $this->put("/v1/rooms/{$id}", $this->validateUpdateData($update));
+        $response = $this->put("/rooms/{$id}", $this->validateUpdateData($update));
 
         return Room::make($response);
     }
@@ -100,13 +120,15 @@ trait ManagesRooms
      */
     public function deleteRoomById(string $id): true
     {
-        $this->delete("/v1/rooms/{$id}");
+        $this->delete("/rooms/{$id}");
 
         return true;
     }
 
     /**
      * Sends a message to a given room.
+     *
+     * @throws \Nomiai\PhpSdk\Exceptions\ValidationException
      *
      * @see https://api.nomi.ai/docs/reference/post-v1-rooms-id-chat
      */
@@ -118,11 +140,18 @@ trait ManagesRooms
     /**
      * Sends a message to a given room by its ID.
      *
+     * @throws \Nomiai\PhpSdk\Exceptions\ValidationException
+     *
      * @see https://api.nomi.ai/docs/reference/post-v1-rooms-id-chat
      */
     public function sendMessageToRoomById(string $id, string $message): Message
     {
-        $response = $this->post("/v1/rooms/{$id}/chat", ['messageText' => $message]);
+        $length = mb_strlen($message);
+        if ($length > self::MAX_ROOM_MESSAGE_LENGTH) {
+            throw ValidationException::roomMessageTooLong($length, self::MAX_ROOM_MESSAGE_LENGTH);
+        }
+
+        $response = $this->post("/rooms/{$id}/chat", ['messageText' => $message]);
 
         return Message::make($response['sentMessage']);
     }
@@ -155,7 +184,7 @@ trait ManagesRooms
      */
     public function requestNomiByIdToMessageRoomById(string $roomId, string $nomiId): Message
     {
-        $response = $this->post("/v1/rooms/{$roomId}/chat/request", ['nomiUuid' => $nomiId]);
+        $response = $this->post("/rooms/{$roomId}/chat/request", ['nomiUuid' => $nomiId]);
 
         return Message::make($response['replyMessage']);
     }
@@ -166,6 +195,7 @@ trait ManagesRooms
      * @param array<string, mixed>|\Nomiai\PhpSdk\Requests\RoomRequest $request
      *
      * @throws \InvalidArgumentException
+     * @throws \Nomiai\PhpSdk\Exceptions\ValidationException
      *
      * @return array<string, mixed>
      */
@@ -177,6 +207,22 @@ trait ManagesRooms
 
         if ($data === []) {
             throw new InvalidArgumentException('Request cannot be empty.');
+        }
+
+        // Validate room name length
+        if (isset($data['name'])) {
+            $nameLength = mb_strlen($data['name']);
+            if ($nameLength > self::MAX_ROOM_NAME_LENGTH) {
+                throw ValidationException::roomNameTooLong($nameLength, self::MAX_ROOM_NAME_LENGTH);
+            }
+        }
+
+        // Validate room note length
+        if (isset($data['note'])) {
+            $noteLength = mb_strlen($data['note']);
+            if ($noteLength > self::MAX_ROOM_NOTE_LENGTH) {
+                throw ValidationException::roomNoteTooLong($noteLength, self::MAX_ROOM_NOTE_LENGTH);
+            }
         }
 
         return $data;

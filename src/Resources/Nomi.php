@@ -76,7 +76,8 @@ readonly class Nomi extends Resource
     /** @inheritDoc */
     public static function make(array $response): static
     {
-        return new self(
+        /** @phpstan-ignore new.static */
+        return new static(
             uuid: $response['uuid'],
             name: $response['name'],
             created: $response['created'],

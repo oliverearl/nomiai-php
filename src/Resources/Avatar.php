@@ -17,9 +17,11 @@ readonly class Avatar extends Resource implements Stringable
     /** @inheritDoc */
     public static function make(array $response): static
     {
-        return new self(
-            avatar: reset($response) ?: throw new InvalidArgumentException('No valid avatar provided!'),
-        );
+        // Response is just the raw image data as a string in an array
+        $avatar = reset($response) ?: throw new InvalidArgumentException('No valid avatar provided!');
+
+        /** @phpstan-ignore new.static */
+        return new static($avatar);
     }
 
     /** @inheritDoc */

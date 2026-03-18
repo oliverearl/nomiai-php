@@ -24,8 +24,8 @@ trait ManagesAvatars
      */
     public function getAvatar(string $id): Avatar
     {
-        $data = $this->rawRequest(HttpMethod::GET, "/v1/nomis/{$id}/avatar");
+        $data = $this->rawRequest(HttpMethod::GET, "/nomis/{$id}/avatar");
 
-        return Avatar::make([$data]);
+        return Avatar::make(['avatar' => $data]);
     }
 }

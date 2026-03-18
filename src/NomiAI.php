@@ -23,9 +23,19 @@ class NomiAI
     use ManagesRooms;
 
     /**
+     * The HTTP client used to make API requests.
+     */
+    private ClientInterface $client;
+
+    /**
      * The default endpoint to use for the library.
      */
     public const string DEFAULT_ENDPOINT = 'https://api.nomi.ai';
+
+    /**
+     * The default API version.
+     */
+    public const string DEFAULT_API_VERSION = 'v1';
 
     /**
      * The version of the API.
@@ -38,14 +48,15 @@ class NomiAI
     public function __construct(
         private readonly string $token,
         private readonly string $endpoint = self::DEFAULT_ENDPOINT,
-        private ?ClientInterface $client = null,
+        ?ClientInterface $client = null,
+        private readonly string $apiVersion = self::DEFAULT_API_VERSION,
     ) {
         if (empty($this->token)) {
             throw new InvalidArgumentException('NomiAI token is required.');
         }
 
-        $this->client ??= new Client([
-            'base_uri' => $this->endpoint . '/',
+        $this->client = $client ?? new Client([
+            'base_uri' => $this->endpoint . '/' . $this->apiVersion . '/',
             RequestOptions::HTTP_ERRORS => false,
             RequestOptions::HEADERS => [
                 'Authorization' => $this->token,
@@ -70,5 +81,13 @@ class NomiAI
     public function endpoint(): string
     {
         return $this->endpoint;
+    }
+
+    /**
+     * Returns the API version currently in use.
+     */
+    public function apiVersion(): string
+    {
+        return $this->apiVersion;
     }
 }

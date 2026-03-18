@@ -10,6 +10,8 @@ enum RoomStatus: string
     case DEFAULT = 'Default';
     case WAITING = 'Waiting';
     case TYPING = 'Typing';
+    case ERROR = 'Error';
     case INITIAL_NOTE_ERROR = 'InitialNoteError';
     case MANUAL = 'Manual';
+    case TRANSCRIPTION_ERROR = 'TranscriptionError';
 }

@@ -17,7 +17,7 @@ describe('nomis', function (): void {
             ];
 
             $api = $this->dummy(
-                uri: '/v1/nomis',
+                uri: '/nomis',
                 method: HttpMethod::GET,
                 status: HttpStatus::OK,
                 body: ['nomis' => $nomis],
@@ -39,7 +39,7 @@ describe('nomis', function (): void {
             $id = $nomi->uuid;
 
             $api = $this->dummy(
-                uri: "/v1/nomis/{$id}",
+                uri: "/nomis/{$id}",
                 method: HttpMethod::GET,
                 status: HttpStatus::OK,
                 body: $nomi->toArray(),

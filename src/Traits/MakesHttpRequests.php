@@ -85,7 +85,13 @@ trait MakesHttpRequests
     {
         $body = $this->rawRequest($verb, $uri, $payload);
 
-        return json_decode($body, associative: true) ?? throw new NomiException();
+        $decoded = json_decode($body, associative: true);
+
+        if (! is_array($decoded)) {
+            throw new NomiException('Invalid JSON response from API');
+        }
+
+        return $decoded;
     }
 
     /**
@@ -101,7 +107,7 @@ trait MakesHttpRequests
             $response = $this->client->request(
                 method: $verb,
                 uri: $uri,
-                options: empty($payload) ? [] : [RequestOptions::FORM_PARAMS => $payload],
+                options: empty($payload) ? [] : [RequestOptions::JSON => $payload],
             );
         } catch (GuzzleException $e) {
             throw new NomiException($e->getMessage(), $e->getCode(), $e);
@@ -146,6 +152,10 @@ trait MakesHttpRequests
 
         // Lookup tables are cool and absolutely not a code smell.
         match ($type) {
+            // Authentication
+            ErrorResponse::UNAUTHORIZED => throw NomiException::unauthorized(),
+            ErrorResponse::INVALID_API_KEY => throw NomiException::invalidApiKey(),
+
             // General
             ErrorResponse::RATE_LIMIT_EXCEEDED => throw NomiException::rateLimitExceeded(),
             ErrorResponse::INVALID_ROUTE_PARAMS => throw NomiException::invalidRouteParams(),
@@ -177,6 +187,7 @@ trait MakesHttpRequests
             ErrorResponse::ROOM_STILL_CREATING => throw NomiException::roomStillCreating(),
             ErrorResponse::ROOM_NOMI_NOT_FOUND => throw NomiException::roomNomiNotFound(),
             ErrorResponse::ROOM_NOMI_NOT_READY_FOR_MESSAGE => throw NomiException::roomNomiNotReadyForMessage(),
+            ErrorResponse::MESSAGE_CHARACTER_LIMIT_EXCEEDED => throw NomiException::messageCharacterLimitExceeded(),
 
             default => throw new NomiException(),
         };

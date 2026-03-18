@@ -11,6 +11,8 @@ readonly class RoomRequest implements JsonSerializable
 {
     /**
      * RoomRequest constructor.
+     *
+     * @param array<int, string|Nomi>|null  $nomiUuids
      */
     public function __construct(
         public ?string $name = null,
@@ -41,7 +43,9 @@ readonly class RoomRequest implements JsonSerializable
         ], static fn(mixed $v): bool => $v !== null);
     }
 
-    /** @inheritDoc */
+    /**
+     * @return array<string, mixed>
+     */
     public function jsonSerialize(): array
     {
         return $this->toArray();
