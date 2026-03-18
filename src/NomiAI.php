@@ -22,6 +22,9 @@ class NomiAI
     use ManagesNomis;
     use ManagesRooms;
 
+    /**
+     * The HTTP client used to make API requests.
+     */
     private ClientInterface $client;
 
     /**
