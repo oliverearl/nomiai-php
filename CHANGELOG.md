@@ -2,7 +2,7 @@
 
 All notable changes to `nomiai-php` will be documented in this file.
 
-## [Unreleased]
+## 1.1.0 - 2026-03-18
 
 ### Added
 - Client-side validation for message, room name, and room note length limits
@@ -26,28 +26,3 @@ All notable changes to `nomiai-php` will be documented in this file.
 - All endpoint paths now use relative URIs (removed hardcoded `/v1/` prefix)
 - Enhanced exception handling with more specific error types
 - Improved docblocks with `@throws` annotations for validation exceptions
-
-## [0.2.0-alpha] - Previous Release
-
-### Added
-- Room functionality (create, update, delete, retrieve)
-- Room messaging capabilities
-- Request Nomi to message room feature
-
-## [0.1.6-alpha] - Previous Release
-
-### Added
-- Retrieve Nomi avatars functionality
-
-## [0.1.3-alpha] - Previous Release
-
-### Added
-- Send and receive messages to Nomis
-
-## [0.1.2-alpha] - Previous Release
-
-### Added
-- Initial release
-- Retrieve and view Nomis functionality
-- Basic SDK structure with trait-based architecture
-
