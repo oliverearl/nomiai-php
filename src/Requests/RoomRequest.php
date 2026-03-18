@@ -12,7 +12,7 @@ readonly class RoomRequest implements JsonSerializable
     /**
      * RoomRequest constructor.
      *
-     * @param  array<int, string|Nomi>|null  $nomiUuids
+     * @param array<int, string|Nomi>|null  $nomiUuids
      */
     public function __construct(
         public ?string $name = null,

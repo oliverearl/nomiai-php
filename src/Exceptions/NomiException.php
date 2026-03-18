@@ -174,7 +174,7 @@ class NomiException extends RuntimeException
     /**
      * An exception caused by an explicitly bad request.
      *
-     * @param  array<string, mixed>  $body
+     * @param array<string, mixed>  $body
      *
      * @see https://api.nomi.ai/docs/reference/post-v1-nomis-id-chat
      */
